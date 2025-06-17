@@ -57,6 +57,21 @@ async function getGuests() {
   }
 }
 
+async function postParty(party) {
+  try {
+    const response = await fetch(API + "/events", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(party),
+    });
+    render();
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 // === Components ===
 
 /** Party name that shows more details about the party when clicked */
@@ -149,11 +164,17 @@ function AdminTool() {
     for (const [key, value] of formData) {
       if (value === "") {
         console.error(`${key} is missing`);
-        return;
+        // return;
       }
     }
 
     // call function that adds party info to API
+    postParty({
+      name: formData.get("name"),
+      description: formData.get("description"),
+      date: new Date(formData.get("date")).toISOString(),
+      location: formData.get("location"),
+    });
   });
   return $form;
 }
