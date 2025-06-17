@@ -57,14 +57,27 @@ async function getGuests() {
   }
 }
 
+// Adds party to the party list and confirms with API
 async function postParty(party) {
   try {
-    const response = await fetch(API + "/events", {
+    await fetch(API + "/events", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(party),
+    });
+    render();
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+// Deletes Party
+async function deleteParty(id) {
+  try {
+    await fetch(API + "/events/" + id, {
+      method: "DELETE",
     });
     render();
   } catch (err) {
@@ -117,8 +130,10 @@ function SelectedParty() {
     <address>${selectedParty.location}</address>
     <p>${selectedParty.description}</p>
     <GuestList></GuestList>
+    <DeleteButton></DeleteButton>
   `;
   $party.querySelector("GuestList").replaceWith(GuestList());
+  $party.querySelector("DeleteButton").replaceWith(DeleteParty());
 
   return $party;
 }
@@ -139,6 +154,16 @@ function GuestList() {
   $ul.replaceChildren(...$guests);
 
   return $ul;
+}
+
+// Button that deletes party
+function DeleteParty() {
+  const $button = document.createElement("button");
+  $button.textContent = "Delete Party";
+  $button.addEventListener("click", () => {
+    deleteParty(selectedParty.id);
+  });
+  return $button;
 }
 
 /** Form to add an event to the API */
