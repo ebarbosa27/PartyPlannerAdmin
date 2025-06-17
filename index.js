@@ -140,6 +140,21 @@ function AdminTool() {
     <input name="location" placeholder="location" />
     <button>Add party</button>
   `;
+
+  $form.addEventListener("submit", (evt) => {
+    evt.preventDefault();
+    const formData = new FormData(evt.target);
+
+    // Test to see if any input data is missing and return if missing.
+    for (const [key, value] of formData) {
+      if (value === "") {
+        console.error(`${key} is missing`);
+        return;
+      }
+    }
+
+    // call function that adds party info to API
+  });
   return $form;
 }
 
