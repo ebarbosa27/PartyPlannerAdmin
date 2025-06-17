@@ -1,6 +1,6 @@
 // === Constants ===
 const BASE = "https://fsa-crud-2aa9294fe819.herokuapp.com/api";
-const COHORT = ""; // Make sure to change this!
+const COHORT = "/2504-FTB-ET-WEB-PT"; // Make sure to change this!
 const API = BASE + COHORT;
 
 // === State ===
@@ -112,9 +112,7 @@ function SelectedParty() {
 function GuestList() {
   const $ul = document.createElement("ul");
   const guestsAtParty = guests.filter((guest) =>
-    rsvps.find(
-      (rsvp) => rsvp.guestId === guest.id && rsvp.eventId === selectedParty.id
-    )
+    rsvps.find((rsvp) => rsvp.guestId === guest.id && rsvp.eventId === selectedParty.id)
   );
 
   // Simple components can also be created anonymously:
@@ -128,6 +126,23 @@ function GuestList() {
   return $ul;
 }
 
+/** Form to add an event to the API */
+function AdminTool() {
+  const $form = document.createElement("form");
+  $form.innerHTML = `
+    <label for="name">Name</label>
+    <input name="name" placeholder="name" />
+    <label for="description">Description</label>
+    <input name="description" placeholder="description" />
+    <label for="date">Date</label>
+    <input type="date" name="date" placeholder="mm/dd/yyyy" />
+    <label for="location">Location</label>
+    <input name="location" placeholder="location" />
+    <button>Add party</button>
+  `;
+  return $form;
+}
+
 // === Render ===
 function render() {
   const $app = document.querySelector("#app");
@@ -137,6 +152,8 @@ function render() {
       <section>
         <h2>Upcoming Parties</h2>
         <PartyList></PartyList>
+        <h3>Add a new party</h3>
+        <PartyAdminTool></PartyAdminTool>
       </section>
       <section id="selected">
         <h2>Party Details</h2>
@@ -147,6 +164,7 @@ function render() {
 
   $app.querySelector("PartyList").replaceWith(PartyList());
   $app.querySelector("SelectedParty").replaceWith(SelectedParty());
+  $app.querySelector("PartyAdminTool").replaceWith(AdminTool());
 }
 
 async function init() {
