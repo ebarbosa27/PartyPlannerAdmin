@@ -60,26 +60,30 @@ async function getGuests() {
 // Adds party to the party list and confirms with API
 async function postParty(party) {
   try {
-    await fetch(API + "/events", {
+    const response = await fetch(API + "/events", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(party),
     });
-    render();
+    if (response.ok) {
+      init();
+    }
   } catch (err) {
     console.error(err);
   }
 }
 
-// Deletes Party
+// Deletes party from the list and API
 async function deleteParty(id) {
   try {
-    await fetch(API + "/events/" + id, {
+    const response = await fetch(API + "/events/" + id, {
       method: "DELETE",
     });
-    render();
+    if (response.ok) {
+      init();
+    }
   } catch (err) {
     console.error(err);
   }
